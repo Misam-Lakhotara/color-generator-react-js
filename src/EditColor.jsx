@@ -8,7 +8,7 @@ import React, {
   useState,
 } from "react";
 import EditIcon from "./Icons/EditIcon";
-import { API } from "./config/config";
+import { config } from "./config/config";
 
 const EditColor = forwardRef((props, ref) => {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -24,7 +24,7 @@ const EditColor = forwardRef((props, ref) => {
   const editColor = async (event) => {
     event.preventDefault();
     try {
-      await axios.put(`${API.url}/api/colors/${formData.id}`, formData);
+      await axios.put(`${config.API_URL}/api/colors/${formData.id}`, formData);
 
       props.fetchColors();
       setIsOpen(false);

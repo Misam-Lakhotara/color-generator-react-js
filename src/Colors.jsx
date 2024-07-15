@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { API } from "./config/config";
+import { config } from "./config/config";
 
 export default function Colors() {
   const [color, setColor] = useState("bg-gray-400");
@@ -29,7 +29,7 @@ export default function Colors() {
   useEffect(() => {
     const fetchColors = async () => {
       try {
-        const response = await axios.get(`${API.url}/api/colors`);
+        const response = await axios.get(`${config.API_URL}/api/colors`);
         setColors(response.data.colors);
       } catch (error) {
         console.error("Error fetching colors:", error);

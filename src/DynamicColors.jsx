@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import AddColors from "./AddColors";
+import AddColor from "./AddColor";
 import DeleteColor from "./DeleteColor";
 import EditColor from "./EditColor";
 import EditIcon from "./Icons/EditIcon";
-import { API } from "./config/config";
+import { config } from "./config/config";
 
 export default function DynamicColors() {
   const [colors, setColors] = useState([]);
@@ -14,7 +14,7 @@ export default function DynamicColors() {
 
   const fetchColors = async (event) => {
     try {
-      const response = await axios.get(`${API.url}/api/colors/`);
+      const response = await axios.get(`${config.API_URL}/api/colors/`);
 
       setColors(response.data.colors);
     } catch (error) {
@@ -28,7 +28,7 @@ export default function DynamicColors() {
 
   return (
     <div className="flex justify-center items-center flex-col">
-      <AddColors fetchColors={fetchColors} />
+      <AddColor fetchColors={fetchColors} />
       <EditColor ref={editColorModalRef} fetchColors={fetchColors} />
 
       <div className="flex flex-row m-16 p-16 space-x-4 mt-10">

@@ -1,37 +1,35 @@
+import axios from "axios";
 import { Modal, Button, TextInput } from "@mantine/core";
 import Atropos from "atropos/react";
 import { toast } from "sonner";
-import React, { useState } from "react";
-import axios from "axios";
-import { API } from "./config/config";
 import "atropos/css";
+import React, { useState } from "react";
+import { config } from "./config/config";
 
 export default function AddColor(props) {
-  const [formState, setFormState] = useState({
-    visible: false,
+  const [visible, setVisible] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [formData, setFormData] = useState({
     colorValue: "",
     colorName: "",
-    saving: false,
   });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormState({ ...formState, [name]: value });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleAddColor = async (event) => {
     event.preventDefault();
-    setFormState({ ...formState, saving: true });
+    setSaving(true);
+
     try {
-      const data = {
-        value: formState.colorValue,
-        label: formState.colorName,
-      };
-      await axios.post(`${API.url}/api/colors`, data);
-      setFormState({
-        ...formState,
-        visible: false,
-        saving: false,
+      await axios.post(`${config.API_URL}/api/colors`, {
+        label: formData.colorName,
+        value: formData.colorValue,
+      });
+      setVisible(false);
+      setFormData({
         colorValue: "",
         colorName: "",
       });
@@ -39,8 +37,9 @@ export default function AddColor(props) {
       toast.success("Color added successfully");
     } catch (error) {
       console.error("Error adding color:", error);
-      toast.error("Failed to add color");
-      setFormState({ ...formState, saving: false });
+      toast.error("Failed to add color. Please try again.");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -61,16 +60,16 @@ export default function AddColor(props) {
       >
         <button
           className="bg-slate-400 m-3 p-3 rounded-full hover:bg-slate-500 mt-10"
-          onClick={() => setFormState({ ...formState, visible: true })}
+          onClick={() => setVisible(true)}
         >
           <span>Add Color</span>
         </button>
 
         <Modal
-          opened={formState.visible}
+          opened={visible}
           title="Add Color"
           centered
-          onClose={() => setFormState({ ...formState, visible: false })}
+          onClose={() => setVisible(false)}
         >
           <form onSubmit={handleAddColor} className="space-y-4">
             <div>
@@ -78,7 +77,7 @@ export default function AddColor(props) {
               <TextInput
                 type="text"
                 name="colorName"
-                value={formState.colorName}
+                value={formData.colorName}
                 onChange={handleChange}
                 required
               />
@@ -89,7 +88,7 @@ export default function AddColor(props) {
               <TextInput
                 type="color"
                 name="colorValue"
-                value={formState.colorValue}
+                value={formData.colorValue}
                 onChange={handleChange}
                 required
               />
@@ -100,9 +99,9 @@ export default function AddColor(props) {
               variant="gradient"
               gradient={{ from: "indigo", to: "cyan" }}
               type="submit"
-              loading={formState.saving}
+              loading={saving}
             >
-              {formState.saving ? "Saving..." : "Save"}
+              {saving ? "Saving..." : "Save"}
             </Button>
           </form>
         </Modal>

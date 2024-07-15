@@ -4,14 +4,14 @@ import { toast } from "sonner";
 import axios from "axios";
 import React from "react";
 import DeleteIcon from "./Icons/DeleteIcon";
-import { API } from "./config/config";
+import { config } from "./config/config";
 
 export default function DeleteColor(props) {
   const { id, fetchColors } = props;
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`${API.url}/api/colors/${id}`);
+      await axios.delete(`${config.API_URL}/api/colors/${id}`);
       fetchColors();
       toast.success("Color deleted successfully");
     } catch (error) {
