@@ -5,6 +5,7 @@ import DeleteColor from "./DeleteColor";
 import EditColor from "./EditColor";
 import EditIcon from "./Icons/EditIcon";
 import { config } from "./config/config";
+import Atropos from "atropos/react";
 
 export default function DynamicColors() {
   const [colors, setColors] = useState([]);
@@ -53,10 +54,24 @@ export default function DynamicColors() {
           </button>
         ))}
       </div>
-      <div
-        className="w-96 h-96 box-border border-2"
-        style={{ backgroundColor: selectedColor }}
-      ></div>
+      <Atropos
+        activeOffset={40}
+        shadowScale={1.05}
+        onEnter={() => console.log("Enter")}
+        onLeave={() => console.log("Leave")}
+        onRotate={(x, y) => console.log("Rotate", x, y)}
+        duration={500}
+        rotate={true}
+        rotateTouch={true}
+        rotateXMax={15}
+        rotateYMax={15}
+        stretchX={2}
+      >
+        <div
+          className="w-96 h-96 box-border border-2"
+          style={{ backgroundColor: selectedColor }}
+        ></div>
+      </Atropos>
     </div>
   );
 }
