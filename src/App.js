@@ -1,4 +1,4 @@
-import { MantineProvider, Modal } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import { Toaster } from "sonner";
 import { ModalsProvider } from "@mantine/modals";
 import "@mantine/core/styles.css";

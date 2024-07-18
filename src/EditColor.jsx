@@ -1,13 +1,7 @@
 import { Modal, Button, TextInput } from "@mantine/core";
 import { toast } from "sonner";
 import axios from "axios";
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useState,
-} from "react";
-import EditIcon from "./Icons/EditIcon";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { config } from "./config/config";
 
 const EditColor = forwardRef((props, ref) => {
