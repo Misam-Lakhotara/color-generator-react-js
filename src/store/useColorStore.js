@@ -26,16 +26,16 @@ const useColorStore = create((set) => ({
   deleteColor: async (id) => {
     try {
       await axios.delete(`${config.API_URL}/api/colors/${id}`);
-
       toast.success("Color deleted successfully");
     } catch (error) {
       console.error("Error deleting color:", error);
       toast.error("Failed to delete color");
     }
   },
-  updateColor: async (id, updatedColor) => {
+  updateColor: async (data) => {
     try {
-      await axios.put(`${config.API_URL}/api/colors/${id}`, updatedColor);
+      const { id } = data;
+      await axios.put(`${config.API_URL}/api/colors/${id}`, data);
       toast.success("Color updated successfully");
     } catch (error) {
       console.error("Error updating color:", error);

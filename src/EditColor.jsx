@@ -12,25 +12,30 @@ const EditColor = forwardRef((props, ref) => {
   const onChangeInput = (field, value) => {
     setFormData({ ...formData, [field]: value });
   };
+
   const openModal = (colorData) => {
     setFormData(colorData);
     setIsOpen(true);
   };
+
   const editColor = async (event) => {
     event.preventDefault();
     try {
-      colorStore.updateColor(formData.id, formData);
+      await colorStore.updateColor(formData);
       colorStore.fetchColors();
       setIsOpen(false);
       setLoading(true);
     } catch (error) {
+      console.error("Failed to update color", error);
     } finally {
       setLoading(false);
     }
   };
+
   useImperativeHandle(ref, () => ({
     openModal,
   }));
+
   return (
     <Modal
       opened={modalIsOpen}
@@ -71,4 +76,5 @@ const EditColor = forwardRef((props, ref) => {
     </Modal>
   );
 });
+
 export default EditColor;
