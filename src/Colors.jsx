@@ -1,11 +1,10 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { config } from "./config/config";
+import useColorStore from "./store/useColorStore";
 
 export default function Colors() {
   const [color, setColor] = useState("bg-gray-400");
-  const [colors, setColors] = useState([]);
   const [selectedColor, setSelectedColor] = useState("gray");
+  const colorStore = useColorStore();
 
   const changeColor = (newColor) => {
     setColor(newColor);
@@ -27,16 +26,7 @@ export default function Colors() {
   };
 
   useEffect(() => {
-    const fetchColors = async () => {
-      try {
-        const response = await axios.get(`${config.API_URL}/api/colors`);
-        setColors(response.data.colors);
-      } catch (error) {
-        console.error("Error fetching colors:", error);
-      }
-    };
-
-    fetchColors();
+    colorStore.fetchColors();
   }, []);
 
   const handleColorClick = (colorName) => {
@@ -75,7 +65,7 @@ export default function Colors() {
       <div className={`w-40 h-40 ${color}`}></div>
       <div className="flex flex-col mt-20 justify-center items-center space-x-10">
         <div className="flex flex-row">
-          {colors.map((color) => (
+          {colorStore.colors.map((color) => (
             <button
               key={color.id}
               style={{

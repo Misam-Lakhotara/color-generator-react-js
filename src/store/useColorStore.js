@@ -14,9 +14,9 @@ const useColorStore = create((set) => ({
       toast.error("Failed to fetch colors");
     }
   },
-  addColor: async (newColor) => {
+  addColor: async (data) => {
     try {
-      await axios.post(`${config.API_URL}/api/colors`, newColor);
+      await axios.post(`${config.API_URL}/api/colors`, data);
       toast.success("Color added successfully");
     } catch (error) {
       console.error("Error adding color:", error);
@@ -26,6 +26,7 @@ const useColorStore = create((set) => ({
   deleteColor: async (id) => {
     try {
       await axios.delete(`${config.API_URL}/api/colors/${id}`);
+
       toast.success("Color deleted successfully");
     } catch (error) {
       console.error("Error deleting color:", error);

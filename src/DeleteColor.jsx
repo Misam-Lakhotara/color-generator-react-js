@@ -1,24 +1,12 @@
 import { Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { toast } from "sonner";
-import axios from "axios";
 import React from "react";
 import DeleteIcon from "./Icons/DeleteIcon";
-import { config } from "./config/config";
+import useColorStore from "./store/useColorStore";
 
 export default function DeleteColor(props) {
-  const { id, fetchColors } = props;
-
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`${config.API_URL}/api/colors/${id}`);
-      fetchColors();
-      toast.success("Color deleted successfully");
-    } catch (error) {
-      console.error("Error deleting color:", error);
-      toast.error("Failed to delete color");
-    }
-  };
+  const { id } = props;
+  const colorStore = useColorStore();
 
   const openConfirmModal = () => {
     modals.openConfirmModal({
@@ -31,7 +19,8 @@ export default function DeleteColor(props) {
       ),
       labels: { confirm: "Confirm", cancel: "Cancel" },
       onCancel: () => console.log("Cancel"),
-      onConfirm: () => handleDelete(),
+      onConfirm: () =>
+        colorStore.deleteColor(id).then(() => colorStore.fetchColors()),
     });
   };
 

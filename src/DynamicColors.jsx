@@ -8,9 +8,7 @@ import useColorStore from "./store/useColorStore";
 
 export default function DynamicColors() {
   const [selectedColor, setSelectedColor] = useState("gray");
-
   const editColorModalRef = useRef();
-
   const colorStore = useColorStore();
 
   useEffect(() => {
