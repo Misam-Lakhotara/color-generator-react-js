@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import "atropos/css";
 import React, { useState } from "react";
 import { config } from "./config/config";
+import useColorStore from "./store/useColorStore";
 
 export default function AddColor(props) {
   const [visible, setVisible] = useState(false);
@@ -13,6 +14,8 @@ export default function AddColor(props) {
     colorValue: "",
     colorName: "",
   });
+
+  const colorStore = useColorStore();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -33,7 +36,7 @@ export default function AddColor(props) {
         colorValue: "",
         colorName: "",
       });
-      props.fetchColors();
+      colorStore.fetchColors();
       toast.success("Color added successfully");
     } catch (error) {
       console.error("Error adding color:", error);
@@ -48,9 +51,6 @@ export default function AddColor(props) {
       <Atropos
         activeOffset={40}
         shadowScale={1.05}
-        onEnter={() => console.log("Enter")}
-        onLeave={() => console.log("Leave")}
-        onRotate={(x, y) => console.log("Rotate", x, y)}
         duration={500}
         rotate={true}
         rotateTouch={true}

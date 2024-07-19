@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 import axios from "axios";
 import { toast } from "sonner";
 import { config } from "../config/config";
@@ -7,8 +7,8 @@ const useColorStore = create((set) => ({
   colors: [],
   fetchColors: async () => {
     try {
-      const response = await axios.get(`${config.API_URL}/api/colors`);
-      set({ colors: response.data });
+      const response = await axios.get(`${config.API_URL}/api/colors/`);
+      set({ colors: response.data.colors });
     } catch (error) {
       console.error("Error fetching colors:", error);
       toast.error("Failed to fetch colors");
