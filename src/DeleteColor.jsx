@@ -5,14 +5,16 @@ import axios from "axios";
 import React from "react";
 import DeleteIcon from "./Icons/DeleteIcon";
 import { config } from "./config/config";
+import useColorStore from "./store/useColorStore";
 
 export default function DeleteColor(props) {
-  const { id, fetchColors } = props;
+  const colorsStore = useColorStore();
+  const { id } = props;
 
   const handleDelete = async () => {
     try {
       await axios.delete(`${config.API_URL}/api/colors/${id}`);
-      fetchColors();
+      colorsStore.fetchColors();
       toast.success("Color deleted successfully");
     } catch (error) {
       console.error("Error deleting color:", error);

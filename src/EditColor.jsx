@@ -3,8 +3,10 @@ import { toast } from "sonner";
 import axios from "axios";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { config } from "./config/config";
+import useColorStore from "./store/useColorStore";
 
 const EditColor = forwardRef((props, ref) => {
+  const colorStore = useColorStore();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ label: "", value: "" });
@@ -15,12 +17,12 @@ const EditColor = forwardRef((props, ref) => {
     setFormData(colorData);
     setIsOpen(true);
   };
+
   const editColor = async (event) => {
     event.preventDefault();
     try {
       await axios.put(`${config.API_URL}/api/colors/${formData.id}`, formData);
-
-      props.fetchColors();
+      colorStore.fetchColors();
       setIsOpen(false);
       setLoading(true);
       toast.success("Color updated successfully");
