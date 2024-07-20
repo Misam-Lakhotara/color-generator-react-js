@@ -1,38 +1,45 @@
 import { Modal, Button, TextInput } from "@mantine/core";
 import { toast } from "sonner";
-import axios from "axios";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
-import { config } from "./config/config";
+import { useDispatch } from "react-redux";
+import { updateColor } from "./store/ColorSlice";
 
 const EditColor = forwardRef((props, ref) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ label: "", value: "" });
+  const dispatch = useDispatch();
+
   const onChangeInput = (field, value) => {
     setFormData({ ...formData, [field]: value });
   };
+
   const openModal = (colorData) => {
     setFormData(colorData);
     setIsOpen(true);
   };
+
   const editColor = async (event) => {
     event.preventDefault();
-    try {
-      await axios.put(`${config.API_URL}/api/colors/${formData.id}`, formData);
+    setLoading(true);
 
-      props.fetchColors();
+    try {
+      await dispatch(
+        updateColor({ id: formData.id, updatedColor: formData })
+      ).unwrap();
       setIsOpen(false);
-      setLoading(true);
       toast.success("Color updated successfully");
     } catch (error) {
-      console.error("Error deleting color:", error);
+      toast.error("Failed to update color");
     } finally {
       setLoading(false);
     }
   };
+
   useImperativeHandle(ref, () => ({
     openModal,
   }));
+
   return (
     <Modal
       opened={modalIsOpen}

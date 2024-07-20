@@ -1,23 +1,16 @@
 import { Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { toast } from "sonner";
-import axios from "axios";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { deleteColor, fetchColors } from "./store/ColorSlice";
 import DeleteIcon from "./Icons/DeleteIcon";
-import { config } from "./config/config";
 
-export default function DeleteColor(props) {
-  const { id, fetchColors } = props;
-
+export default function DeleteColor({ id }) {
+  console.log(id);
+  const dispatch = useDispatch();
   const handleDelete = async () => {
-    try {
-      await axios.delete(`${config.API_URL}/api/colors/${id}`);
-      fetchColors();
-      toast.success("Color deleted successfully");
-    } catch (error) {
-      console.error("Error deleting color:", error);
-      toast.error("Failed to delete color");
-    }
+    await dispatch(deleteColor(id)).unwrap();
+    dispatch(fetchColors());
   };
 
   const openConfirmModal = () => {
@@ -30,14 +23,15 @@ export default function DeleteColor(props) {
         </Text>
       ),
       labels: { confirm: "Confirm", cancel: "Cancel" },
-      onCancel: () => console.log("Cancel"),
-      onConfirm: () => handleDelete(),
+      onConfirm: () => {
+        handleDelete();
+      },
     });
   };
 
   return (
     <div
-      className="absolute -top-2 -right-3 z-50 bg-gray-200 rounded-full w-4 h-4 flex items-center justify-center"
+      className="absolute -top-2 -right-3 z-50 bg-gray-200 rounded-full w-4 h-4 flex items-center justify-center cursor-pointer"
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
