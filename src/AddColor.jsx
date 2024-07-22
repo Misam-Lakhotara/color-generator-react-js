@@ -1,10 +1,7 @@
-import axios from "axios";
+import React, { useState } from "react";
 import { Modal, Button, TextInput } from "@mantine/core";
 import Atropos from "atropos/react";
-import { toast } from "sonner";
 import "atropos/css";
-import React, { useState } from "react";
-import { config } from "./config/config";
 import useColorStore from "./store/useColorStore";
 
 export default function AddColor(props) {
@@ -27,7 +24,7 @@ export default function AddColor(props) {
     setSaving(true);
 
     try {
-      await axios.post(`${config.API_URL}/api/colors`, {
+      await colorStore.addColor({
         label: formData.colorName,
         value: formData.colorValue,
       });
@@ -36,11 +33,8 @@ export default function AddColor(props) {
         colorValue: "",
         colorName: "",
       });
-      colorStore.fetchColors();
-      toast.success("Color added successfully");
+      await colorStore.fetchColors();
     } catch (error) {
-      console.error("Error adding color:", error);
-      toast.error("Failed to add color. Please try again.");
     } finally {
       setSaving(false);
     }
